@@ -1,4 +1,4 @@
-## Sage Vision
+# Sage Vision
 SageVision is a local-first, vision-centric video summarisation framework that generates meaningful summaries without relying on audio transcripts.
 
 Unlike traditional video summarizers that depend on speech-to-text pipelines, SageVision treats visual understanding as the primary signal, making it suitable for silent videos, privacy-sensitive environments, and offline use.
@@ -6,15 +6,15 @@ Unlike traditional video summarizers that depend on speech-to-text pipelines, Sa
 **Key Features:**
 
 ```python
-🧠 Vision-first summarization — no transcript required
+🧠 Vision-first summarization:  no transcript required
 💻 Runs fully locally (CPU or GPU)
-🔒 Privacy-preserving — no cloud or external APIs needed
-🎞️ Scene-aware & keyframe-based processing
+🔒 Privacy-preserving:  no cloud or external APIs needed
+🎞️ Scene-aware & keyframe:  based processing
 📉 Minimal LLM usage through hierarchical summarization
-🧩 Modular & extensible open-source architecture
+🧩 Modular & extensible open:   source architecture
 ```
 
-# **🔍 Why SageVision?**
+## **🔍 Why SageVision?**
 ```python
 Most existing video summarization tools follow this pipeline:
 
@@ -35,7 +35,7 @@ Accessibility use cases
 Low-bandwidth or offline environments
 ```
 
-# **🏗️ System Overview:**
+## **🏗️ System Overview:**
 
 **High-level Pipeline:**
 
@@ -61,23 +61,23 @@ LLMs as aggregators, not perception engines
 Local-first by default
 $$
 
-# **🧩 Architecture:**
+## **🧩 Architecture:**
 
 ```python
 sagevision/
-├── video_parser/        # Video decoding (FFmpeg / OpenCV)
-├── scene_detector/      # Shot & scene boundary detection
-├── keyframe_selector/   # Adaptive keyframe sampling
-├── vision_captioner/    # Image-to-text (Florence-2, BLIP, etc.)
-├── summarizer/          # Lightweight text summarization
-├── pipeline/            # End-to-end orchestration
-├── cli/                 # Command-line interface
-└── utils/               # Shared utilities
+├── video_parser/        ## Video decoding (FFmpeg / OpenCV)
+├── scene_detector/      ## Shot & scene boundary detection
+├── keyframe_selector/   ## Adaptive keyframe sampling
+├── vision_captioner/    ## Image-to-text (Florence-2, BLIP, etc.)
+├── summarizer/          ## Lightweight text summarization
+├── pipeline/            ## End-to-end orchestration
+├── cli/                 ## Command-line interface
+└── utils/               ## Shared utilities
 ```
 
 Each module is replaceable and configurable, enabling experimentation with different models and strategies.
 
-# **🖥️ Local Execution Modes:**
+## **🖥️ Local Execution Modes:**
 
 $$
 Mode:	Description
@@ -91,7 +91,7 @@ $$
 
 SageVision is designed to scale down gracefully to low-resource machines.
 
-# **🚀 Getting Started (Planned):**
+## **🚀 Getting Started (Planned):**
 
 ```python
 git clone https://github.com/GaganPaul/sage_vision
@@ -99,7 +99,7 @@ cd sagevision
 pip install -r requirements.txt
 
 ```
-# **🎯 Project Goals:**
+## **🎯 Project Goals:**
 
 $$
 Enable transcript-less video summarization
@@ -113,7 +113,7 @@ Provide a clean, research-friendly codebase
 Serve as a foundation for further work in visual understanding
 $$
 
-# **🚫 Non-Goals:**
+## **🚫 Non-Goals:**
 
 $$
 Real-time live video summarization
@@ -125,7 +125,7 @@ Replacing transcript-based summarizers
 Cloud-first or API-dependent workflows
 $$
 
-# **📚 Use Cases:**
+## **📚 Use Cases:**
 $$
 Education & self-learning
 
@@ -139,13 +139,13 @@ NGOs and low-connectivity regions
 
 Privacy-sensitive video analysis
 $$
-# **🧠 Research Alignment:**
+## **🧠 Research Alignment:**
 
 **SageVision can be positioned as:**
 
 A local-first, vision-centric video summarization system that minimizes LLM usage through adaptive scene-based compression.
 
-# **The project is suitable for:**
+## **The project is suitable for:**
 $$
 Applied research
 
@@ -155,11 +155,11 @@ Open-source contributions
 
 Academic demos and benchmarks
 $$
-# **🤝 Contributing:**
+## **🤝 Contributing:**
 
 Contributions are welcome!
 
-# **You can help by:**
+## **You can help by:**
 $$
 Improving keyframe selection strategies
 
@@ -171,11 +171,11 @@ Improving documentation and examples
 $$
 Contribution guidelines will be added soon.
 
-# **📄 License:**
+## **📄 License:**
 
 This project will be released under a permissive open-source license (TBD).
 
-# **🌱 Project Status:**
+## **🌱 Project Status:**
 
 **🟡 Active development**
 
