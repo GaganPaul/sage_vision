@@ -48,7 +48,7 @@ Keyframe Extraction
   ↓
 Vision Captioning
   ↓
-Scene-level Summaries
+Scene level Summaries
   ↓
 Final Video Summary
 ```
