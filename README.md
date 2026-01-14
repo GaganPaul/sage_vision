@@ -53,13 +53,13 @@ Scene-level Summaries
 Final Video Summary
 ```
 
-$$
+
 Core Design Principles
 Compress before reasoning
 Scenes over frames
 LLMs as aggregators, not perception engines
 Local-first by default
-$$
+
 
 ## **🧩 Architecture:**
 
@@ -79,7 +79,7 @@ Each module is replaceable and configurable, enabling experimentation with diffe
 
 ## **🖥️ Local Execution Modes:**
 
-$$
+
 Mode:	Description
 
 CPU-only:	Fully offline, slower but accessible
@@ -87,7 +87,7 @@ CPU-only:	Fully offline, slower but accessible
 GPU-accelerated:	Faster vision captioning & summarization
 
 Research mode:	Plug in custom models & heuristics
-$$
+
 
 SageVision is designed to scale down gracefully to low-resource machines.
 
@@ -101,7 +101,7 @@ pip install -r requirements.txt
 ```
 ## **🎯 Project Goals:**
 
-$$
+
 Enable transcript-less video summarization
 
 Reduce dependency on large multimodal LLMs
@@ -111,11 +111,11 @@ Support offline & edge deployments
 Provide a clean, research-friendly codebase
 
 Serve as a foundation for further work in visual understanding
-$$
+
 
 ## **🚫 Non-Goals:**
 
-$$
+
 Real-time live video summarization
 
 Emotion or intent-level reasoning
@@ -123,10 +123,10 @@ Emotion or intent-level reasoning
 Replacing transcript-based summarizers
 
 Cloud-first or API-dependent workflows
-$$
+
 
 ## **📚 Use Cases:**
-$$
+
 Education & self-learning
 
 Accessibility tools
@@ -138,7 +138,7 @@ Research & benchmarking
 NGOs and low-connectivity regions
 
 Privacy-sensitive video analysis
-$$
+
 ## **🧠 Research Alignment:**
 
 **SageVision can be positioned as:**
@@ -146,7 +146,7 @@ $$
 A local-first, vision-centric video summarization system that minimizes LLM usage through adaptive scene-based compression.
 
 ## **The project is suitable for:**
-$$
+
 Applied research
 
 System papers
@@ -154,13 +154,13 @@ System papers
 Open-source contributions
 
 Academic demos and benchmarks
-$$
+
 ## **🤝 Contributing:**
 
 Contributions are welcome!
 
 ## **You can help by:**
-$$
+
 Improving keyframe selection strategies
 
 Adding new vision captioning models
@@ -168,7 +168,7 @@ Adding new vision captioning models
 Optimizing performance for CPU-only setups
 
 Improving documentation and examples
-$$
+
 Contribution guidelines will be added soon.
 
 ## **📄 License:**
