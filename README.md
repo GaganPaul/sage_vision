@@ -1,4 +1,4 @@
-# sage_vision
+# Sage Vision
 SageVision is a local-first, vision-centric video summarisation framework that generates meaningful summaries without relying on audio transcripts.
 
 Unlike traditional video summarizers that depend on speech-to-text pipelines, SageVision treats visual understanding as the primary signal, making it suitable for silent videos, privacy-sensitive environments, and offline use.
@@ -32,6 +32,7 @@ Low-bandwidth or offline environments
 
 **High-level Pipeline:**
 
+```python
 Video
   ↓
 Scene Detection
@@ -43,6 +44,7 @@ Vision Captioning
 Scene-level Summaries
   ↓
 Final Video Summary
+```
 
 Core Design Principles
 Compress before reasoning
@@ -52,6 +54,7 @@ Local-first by default
 
 **🧩 Architecture:**
 
+```python
 sagevision/
 ├── video_parser/        # Video decoding (FFmpeg / OpenCV)
 ├── scene_detector/      # Shot & scene boundary detection
@@ -61,6 +64,7 @@ sagevision/
 ├── pipeline/            # End-to-end orchestration
 ├── cli/                 # Command-line interface
 └── utils/               # Shared utilities
+```
 
 Each module is replaceable and configurable, enabling experimentation with different models and strategies.
 
