@@ -1,0 +1,22 @@
+# Core ML & Transformers
+transformers>=4.30
+torch
+accelerate  # optional, for device mapping and multi-GPU
+
+# Image & video utilities
+pillow
+numpy
+opencv-python-headless  # or opencv-python if you need GUI features
+imageio-ffmpeg
+
+# Testing / dev
+pytest
+
+# Optional (quantization, large-models):
+# bitsandbytes  # only if you plan to load large models with 8-bit quantization
+
+# Notes:
+# - On macOS Apple Silicon (M1/M2/M3/M4), install a PyTorch wheel with MPS support
+#   following https://pytorch.org and ensure `torch.backends.mps.is_available()` is True.
+# - Tkinter is part of Python's standard library (no pip package). On macOS you may need
+#   to install tcl/tk (e.g., via Homebrew) if Tkinter is not available in your Python build.

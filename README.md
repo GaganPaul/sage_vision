@@ -79,7 +79,6 @@ Each module is replaceable and configurable, enabling experimentation with diffe
 
 ## **🖥️ Local Execution Modes:**
 
-
 Mode:	Description
 
 CPU-only:	Fully offline, slower but accessible
@@ -88,17 +87,169 @@ GPU-accelerated:	Faster vision captioning & summarization
 
 Research mode:	Plug in custom models & heuristics
 
-
 SageVision is designed to scale down gracefully to low-resource machines.
+
+---
+
+## **🔁 Default Hugging Face Models (configurable)**
+
+- **Vision captioning:** `Salesforce/blip-image-captioning-base` (default, CPU-friendly)
+- **CLIP embeddings (keyframe selection):** `laion/CLIP-ViT-B-32`
+- **Summarization:** `facebook/bart-large-cnn`
+
+These defaults are chosen to balance quality and runtime on modern laptops (e.g. Apple M-series). Models are configurable in code and can be overridden for research or production.
+
+### Device selection
+
+The components auto-detect available compute in the following order: CUDA > MPS (Apple Silicon) > CPU. If MPS or CUDA is available, models will attempt to use them; otherwise the code runs on CPU.
+
+### Accessing gated models on Hugging Face
+
+Some model repositories on Hugging Face are gated or require authentication. If a configured model (e.g., `laion/CLIP-ViT-B-32`) is private, you can authenticate in one of two ways:
+
+- Log in locally with the CLI: `huggingface-cli login` and provide your token when prompted.
+- Set the token in your environment: `export HUGGINGFACE_HUB_TOKEN="hf_xxx"` (or add it to your shell profile).
+
+The `KeyframeSelector` accepts an optional `token` parameter or reads `HUGGINGFACE_HUB_TOKEN` from the environment. If a model fails to load, SageVision will automatically fall back to a public CLIP model (`openai/clip-vit-large-patch14`).
+
+### Optional: use OpenCLIP
+
+You can use the `open_clip` library and HF-hosted OpenCLIP models directly (for example `hf-hub:laion/CLIP-ViT-B-32-laion2B-s34B-b79K`) by enabling `use_open_clip=True` when creating `KeyframeSelector`.
+
+Example:
+```python
+from sagevision.keyframe_selector import KeyframeSelector
+selector = KeyframeSelector(model_name='hf-hub:laion/CLIP-ViT-B-32-laion2B-s34B-b79K', use_open_clip=True)
+```
+If `open_clip` is not installed or the requested model is gated and you are not authenticated, the selector will fall back to the `transformers`-based CLIP path and then to a public fallback model.
+
+### Pre-download OpenCLIP (safe)
+
+If you want to pre-download a gated HF-hosted OpenCLIP model to your machine (so the selector can use it offline), follow these steps locally:
+
+1. Install OpenCLIP: `pip install open_clip_torch`
+2. Authenticate to Hugging Face (recommended):
+   - `huggingface-cli login` or
+   - `export HUGGINGFACE_HUB_TOKEN="hf_xxx"` (add to your shell profile)
+3. Run the download helper (from the repo root):
+
+```bash
+python scripts/download_openclip.py --model hf-hub:laion/CLIP-ViT-B-32-laion2B-s34B-b79K
+```
+
+This will download the model weights and transforms into your HF cache. Do NOT paste or share your token in public chats; if you already did, rotate and revoke it on Hugging Face for safety.
+
+### Quick code examples
+
+```python
+from sagevision.vision_captioner import VisionCaptioner
+from sagevision.keyframe_selector import KeyframeSelector
+from sagevision.summarizer import Summarizer
+
+cap = VisionCaptioner()  # uses Salesforce/blip-image-captioning-base
+cap.caption(pil_image)
+
+selector = KeyframeSelector()
+idxs = selector.select(list_of_frames)
+
+summ = Summarizer()
+summary = summ.summarize(["A man walks into a room.", "He sits down."])
+```
+
+### Dependencies
+
+Add the following to your environment for best results:
+
+```
+transformers>=4.30
+torch
+accelerate  # optional, for large models and device mapping
+```
+
+For Apple Silicon / MPS users, install a PyTorch wheel with MPS support and ensure `torch.backends.mps.is_available()` returns True.
 
 ## **🚀 Getting Started (Planned):**
 
-```python
+**Recommended (Conda, macOS-friendly)**
+
+```bash
+# Create an environment (example name: 'sv')
+conda create -n sv python=3.10 -y
+conda activate sv
+# Install Tcl/Tk from conda-forge so Tkinter works reliably on macOS
+conda install -c conda-forge tk -y
+# Install runtime dependencies
+pip install -r requirements.txt
+```
+
+If you prefer not to activate the environment, use `conda run` to execute commands in the `sv` environment. Examples (exact commands):
+
+```bash
+# Launch GUI via the CLI (example you provided):
+conda run -n sv /bin/bash -lc "PYTHONPATH=. python -m sagevision.cli --gui"
+
+# Launch GUI directly (no CLI wrapper):
+conda run -n sv /bin/bash -lc "PYTHONPATH=. python -m sagevision.gui"
+
+# Run the CLI on a video file from the environment:
+conda run -n sv /bin/bash -lc "PYTHONPATH=. python -m sagevision.cli --input path/to/video.mp4"
+```
+
+**Alternative (pip / system Python)**
+
+```bash
 git clone https://github.com/GaganPaul/sage_vision
 cd sagevision
 pip install -r requirements.txt
-
 ```
+
+### Quick start
+
+- Run the CLI on a video file:
+
+```bash
+python -m sagevision.cli --input path/to/video.mp4
+```
+
+- Launch the simple Tkinter GUI via the CLI:
+
+```bash
+python -m sagevision.cli --gui
+```
+
+- Launch the GUI directly (without the CLI):
+
+```bash
+python -m sagevision.gui
+```
+
+or from any Python REPL / script:
+
+```bash
+python -c "from sagevision.gui import launch; launch()"
+```
+
+Note: If Tkinter is not available in your Python build on macOS, install a tcl/tk-enabled Python or use Homebrew to install the necessary libraries. The CLI performs a safe Tk init check (subprocess) before launching on macOS and will print diagnostic output if initialization fails.
+
+### Running GUI vs CLI
+
+- Use `python -m sagevision.cli --input path/to/video.mp4` when you want to run the pipeline non-interactively and just receive a textual summary.
+- Use `python -m sagevision.cli --gui` when you prefer the simple desktop UI and do not want to run the pipeline from a script.
+- Use `python -m sagevision.gui` if you want to launch the GUI directly (for example when embedding or debugging the UI) without invoking the CLI's subprocess Tk init check.
+
+### GUI improvements & notes
+
+- The GUI now reuses a single `Pipeline` instance to reduce per-run overhead and offers a small set of usability improvements: **Stop** button (best-effort if `Pipeline.stop()` is present), **Clear Output**, input validation (checks file exists), and more robust progress handling (accepts both 0..1 and 0..100 percent ranges).
+- If you press **Stop** and the pipeline implements a `stop()` method it will be called; otherwise a stop request will be recorded and noted in the UI (best-effort cancellation).
+- If you see issues launching the GUI on macOS, make sure your Python is linked against a Tcl/Tk build (or use a Python distribution that bundles it, e.g., official installers or Homebrew builds).
+
+### GUI progress
+
+The GUI displays a visual progress bar (ttk.Progressbar) in the main toolbar and shows per-stage messages in the output window via the pipeline's `progress_callback` API. The progress bar updates are marshaled safely to the GUI thread.
+
+### OpenCV video parsing
+
+SageVision now includes an OpenCV-based `VideoParser` (uses `opencv-python` / `opencv-python-headless`). The parser yields `PIL.Image` frames which are consumed by the rest of the pipeline. On macOS, install a PyTorch wheel with MPS support and ensure OpenCV is available in your environment.
 ## **🎯 Project Goals:**
 
 
