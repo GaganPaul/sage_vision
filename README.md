@@ -338,6 +338,6 @@ Implementation is ongoing.
 - [Contributing](CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Security Policy](SECURITY.md)
-- [License](LICENSE)
+- [License](LICENSE.md)
 
 This project follows open-source best practices as part of Open Source Connect (OGC).
