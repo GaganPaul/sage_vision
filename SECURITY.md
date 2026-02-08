@@ -6,8 +6,8 @@ We actively support the following versions of **Sage Vision** with security upda
 
 | Version | Supported |
 |--------|-----------|
-| 1.x.x  | ✅ |
-| < 1.0  | ❌ |
+| 1.x.x  | Yes |
+| < 1.0  | No |
 
 Only the latest stable release receives active security updates.
 
