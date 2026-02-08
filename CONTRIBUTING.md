@@ -50,3 +50,7 @@ git commit -m "Add: brief description of change"
 Fix: incorrect image preprocessing logic
 Add: support for multiple vision pipelines
 ---
+### 6. Push and Open a Pull Request
+```bash
+git push origin feature/your-feature-name
+```
