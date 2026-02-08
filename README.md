@@ -324,7 +324,7 @@ Contribution guidelines will be added soon.
 
 ## **📄 License:**
 
-This project will be released under a permissive open-source license (TBD).
+This project is licensed under the **MIT License**.
 
 ## **🌱 Project Status:**
 
