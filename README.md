@@ -333,3 +333,11 @@ This project will be released under a permissive open-source license (TBD).
 Core architecture and pipeline design are complete.
 Implementation is ongoing.
 
+## 📜 Project Guidelines
+
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security Policy](SECURITY.md)
+- [License](LICENSE)
+
+This project follows open-source best practices as part of Open Source Connect (OGC).
