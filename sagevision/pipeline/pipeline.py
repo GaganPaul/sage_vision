@@ -4,6 +4,7 @@ This pipeline uses placeholder implementations; replace with actual references
 to the concrete module implementations when they are available.
 """
 from typing import Any
+import time 
 
 from sagevision.video_parser import VideoParser
 from sagevision.scene_detector import SceneDetector
@@ -27,43 +28,54 @@ class Pipeline:
             progress_callback: Optional callable(stage: str, percent: float, message: str)
                 Called at key points to report progress. Percent is in [0.0, 1.0].
         """
+        start_time = time.time()
 
         def _cb(stage: str, percent: float, message: str = ""):
             if callable(progress_callback):
-                try:
-                    progress_callback(stage, percent, message)
-                except Exception:
-                    # Don't let callback errors break the pipeline
-                    pass
+               try:
+                   eta_text = ""
 
+                   if percent > 0:
+                       elapsed = time.time() - start_time
+                       estimated_total = elapsed / percent
+                       remaining = max(0, estimated_total - elapsed)
+                       eta_text = f" | ETA: {int(remaining)}s"
+
+                   progress_callback(stage, percent, message + eta_text)
+
+               except Exception:
+                # Don't let callback errors break the pipeline
+                   pass
         # 1. Parse video -> frames
         _cb("parsing", 0.0, "opening video")
-        parser = VideoParser(video_path)
         try:
+            parser = VideoParser(video_path)
             frames_iterator = parser.frames()
         except Exception as e:
-            _cb("parsing", 1.0, f"failed: {e}")
+            _cb("parsing", 0.15, f"failed: {e}")
             return "[Pipeline error] failed to open video"
-        _cb("parsing", 1.0, "done")
+        _cb("parsing", 0.15, "done")
 
         # 2. Scene detection (we collect frames into memory for now)
-        _cb("scene_detection", 0.0, "collecting frames")
+        _cb("scene_detection", 0.15, "collecting frames")
         frames = list(frames_iterator)
         detector = SceneDetector()
         try:
             boundaries = detector.detect_scenes(frames)
         except Exception as e:
-            _cb("scene_detection", 1.0, f"failed: {e}")
+            _cb("scene_detection", 0.30, f"failed: {e}")
             return "[Pipeline error] scene detection failed"
-        _cb("scene_detection", 1.0, f"found {len(boundaries)} scene(s)")
+        _cb("scene_detection", 0.30, f"found {len(boundaries)} scene(s)")
 
         # 3. For each scene, select keyframes, caption and summarize
         selector = KeyframeSelector()
         scene_summaries = []
         total_scenes = max(1, len(boundaries))
         for i, start_idx in enumerate(boundaries):
-            percent_base = i / total_scenes
-            percent_step = 1.0 / total_scenes
+            base = 0.30
+            span = 0.55  #scene processing range 
+            percent_base = base + (span * (i / total_scenes))
+            percent_step =span / total_scenes
             _cb(f"scene_{i}_start", percent_base, f"scene {i} starting at frame {start_idx}")
 
             end_idx = boundaries[i + 1] if (i + 1) < len(boundaries) else len(frames)
@@ -86,7 +98,7 @@ class Pipeline:
             _cb(f"scene_{i}_done", percent_base + percent_step, f"scene {i} done")
 
         # 4. Final aggregation
-        _cb("aggregation", 0.0, "aggregating scene summaries")
+        _cb("aggregation", 0.85, "aggregating scene summaries")
         if not scene_summaries:
             _cb("aggregation", 1.0, "no scenes")
             return ""
