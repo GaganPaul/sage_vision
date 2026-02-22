@@ -50,7 +50,7 @@ class Pipeline:
         _cb("parsing", 0.0, "opening video")
         try:
             parser = VideoParser(video_path)
-            frames_iterator = parser.frames()
+            frames = list(parser.frames())
         except Exception as e:
             _cb("parsing", 0.15, f"failed: {e}")
             return "[Pipeline error] failed to open video"
@@ -58,7 +58,6 @@ class Pipeline:
 
         # 2. Scene detection (we collect frames into memory for now)
         _cb("scene_detection", 0.15, "collecting frames")
-        frames = list(frames_iterator)
         detector = SceneDetector()
         try:
             boundaries = detector.detect_scenes(frames)
